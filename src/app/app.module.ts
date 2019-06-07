@@ -51,6 +51,7 @@ const routes: Routes = [
         MatSidenavModule,
         MatListModule,
         MatToolbarModule,
+        EffectsModule.forRoot([]),
         AuthModule.forRoot(),
         StoreModule.forRoot(reducers, { metaReducers }),
         !environment.production ? StoreDevtoolsModule.instrument() : [],
