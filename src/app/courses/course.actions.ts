@@ -4,9 +4,10 @@ import { Course } from './model/course';
 export enum CourseActionTypes {
                    //Source of the Action //Event linked to the action
     CourseRequested = '[View Course Page] Course Requested',
+    CourseLoaded = '[Courses API] Course loaded',
+    AllCoursesRequested = '[Courses Homepage] All Courses Requested',
+    AllCoursesLoaded = '[Courses API] All Courses Loaded'
 
-                    //Orgin of Action //Event linked to the action
-    CourseLoaded = '[Courses API] Course loaded'
 }
 
 
@@ -20,4 +21,13 @@ export class CourseLoaded implements Action {
     constructor(public payload: {course: Course}) {}
 }
 
-export type CourseActions = CourseRequested | CourseLoaded;
+export class AllCoursesRequested implements Action {
+    readonly type = CourseActionTypes.AllCoursesRequested;
+}
+
+export class AllCoursesLoaded implements Action {
+    readonly type = CourseActionTypes.AllCoursesLoaded;
+    constructor(public payload: {courses: Course[]}) {}
+}
+
+export type CourseActions = CourseRequested | CourseLoaded | AllCoursesRequested | AllCoursesLoaded  ;
