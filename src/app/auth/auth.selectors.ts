@@ -1,7 +1,8 @@
 import {createSelector} from '@ngrx/store';
+import { AuthState } from './auth.reducer';
 
 
-export const selectAuthState = state => state.auth;
+export const selectAuthState = (state: { auth: AuthState; }) => state.auth;
 
 
 export const isLoggedIn = createSelector(
