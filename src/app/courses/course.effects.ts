@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {AllCoursesLoaded, AllCoursesRequested, CourseActionTypes, CourseLoaded, CourseRequested} from './course.actions';
+import {AllCoursesLoaded, AllCoursesRequested, CourseActionTypes, CourseLoaded, CourseRequested, LessonsPageRequested, LessonsPageLoaded} from './course.actions';
 import {throwError} from 'rxjs';
-import {catchError, concatMap, exhaustMap, filter, map, mergeMap, withLatestFrom} from "rxjs/operators";
+import {catchError, concatMap, exhaustMap, filter, map, mergeMap, withLatestFrom, tap} from "rxjs/operators";
 import {CoursesService} from './services/courses.service';
 import {AppState} from '../reducers';
 import {select, Store} from '@ngrx/store';
@@ -36,6 +36,14 @@ export class CourseEffects {
         console.log('error loading all courses ', err);
         return throwError(err);
       })
+    );
+
+    @Effect()
+    loadLessonsPage$ = this.actions$.pipe(
+      ofType<LessonsPageRequested>(CourseActionTypes.LessonsPageRequested),
+      mergeMap(({payload}) => this.coursesService.findLessons(payload.courseId, payload.page.pageIndex, payload.page.pageSize) ),
+      map((lessons) => new LessonsPageLoaded({lessons}))
+
     );
 
 

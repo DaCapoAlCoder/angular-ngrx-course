@@ -6,6 +6,9 @@ import {CoursesService} from "../services/courses.service";
 import {debounceTime, distinctUntilChanged, startWith, tap, delay} from 'rxjs/operators';
 import {merge, fromEvent} from "rxjs";
 import {LessonsDataSource} from "../services/lessons.datasource";
+import { AppState } from '../../reducers';
+import { Store } from '@ngrx/store';
+import { PageQuery } from '../course.actions';
 
 
 @Component({
@@ -24,13 +27,21 @@ export class CourseComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-    constructor(private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute, private store: Store<AppState>) {
 
     }
 
     ngOnInit() {
 
         this.course = this.route.snapshot.data["course"];
+        this.dataSource = new LessonsDataSource(this.store);
+
+        const initialPage: PageQuery = {
+            pageIndex: 0,
+            pageSize: 3
+        };
+
+        this.dataSource.loadLessons(this.course.id, initialPage);
 
     }
 
